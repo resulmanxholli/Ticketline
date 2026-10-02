@@ -20,6 +20,13 @@ const userSchema = new Schema(
   { timestamps: true },
 );
 
+userSchema.set("toJSON", {
+  transform(_doc, ret) {
+    const { passwordHash: _passwordHash, ...safe } = ret;
+    return safe;
+  },
+});
+
 export type User = InferSchemaType<typeof userSchema>;
 
 export const UserModel = model("User", userSchema);

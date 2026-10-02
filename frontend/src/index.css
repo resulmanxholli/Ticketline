@@ -932,6 +932,83 @@ h4 {
   font-size: 14px;
 }
 
+/* ---------- sign in ---------- */
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-name {
+  max-width: 14rem;
+  overflow: hidden;
+  color: var(--hero-muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-on-green {
+  background: transparent;
+  border-color: var(--chip);
+  color: var(--hero-ink);
+}
+
+.btn-on-green:hover {
+  background: var(--chip);
+}
+
+.auth-card {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+.auth-card h1 {
+  font-size: 34px;
+}
+
+.auth-card > p {
+  margin: 6px 0 0;
+  font-size: 14px;
+}
+
+.auth-card .form {
+  margin-top: 20px;
+}
+
+.auth-switch {
+  margin: 18px 0 0;
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth-switch .text-btn {
+  color: var(--primary);
+}
+
+.field-hint {
+  font-weight: 400;
+}
+
+.field-error {
+  color: var(--amber-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.form-error {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--amber-bg);
+  color: var(--amber-ink);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 /* ---------- footer ---------- */
 
 .site-footer {
@@ -1022,7 +1099,8 @@ h4 {
     font-size: 13px;
   }
 
-  .topnav .optional {
+  .topnav .optional,
+  .user-name {
     display: none;
   }
 

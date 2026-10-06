@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import { env } from '../config/env.js'
-import { UserModel } from '../models/User.js'
+import { UserModel, type Role } from '../models/User.js'
 import { HttpError } from '../utils/HttpError.js'
 import type { LoginInput, RegisterInput } from '../validation/auth.js'
 
@@ -10,24 +10,29 @@ function signToken(userId: string) {
   return jwt.sign({}, env.JWT_SECRET, { subject: userId, expiresIn: '7d', algorithm: 'HS256' })
 }
 
-export async function register(input: RegisterInput) {
+type NewUser = { name: string; email: string; password: string; role: Role }
+
+export async function createUser(input: NewUser) {
   const passwordHash = await bcrypt.hash(input.password, 12)
 
   try {
-    const user = await UserModel.create({
+    return await UserModel.create({
       name: input.name,
       email: input.email,
       passwordHash,
       role: input.role,
     })
-    return { user, token: signToken(user._id.toString()) }
   } catch (err) {
-    // The unique index on email is the real duplicate check
     if (err instanceof mongoose.mongo.MongoServerError && err.code === 11000) {
       throw new HttpError(409, 'Email is already registered')
     }
     throw err
   }
+}
+
+export async function register(input: RegisterInput) {
+  const user = await createUser({ ...input, role: 'attendee' })
+  return { user, token: signToken(user._id.toString()) }
 }
 
 export async function login(input: LoginInput) {

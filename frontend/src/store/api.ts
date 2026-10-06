@@ -1,6 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { AuthResponse } from "../types/auth";
-import type { User } from "../types/user";
 import type { RootState } from "./store";
 
 export const seatlyApi = createApi({
@@ -13,17 +11,6 @@ export const seatlyApi = createApi({
       return headers;
     },
   }),
-  endpoints: (builder) => ({
-    login: builder.mutation<AuthResponse, { email: string; password: string }>({
-        query: (body) => ({ url: '/auth/login', method: 'POST', body })
-    }),
-    register: builder.mutation<AuthResponse, { name: string; email: string; password: string; role?: "attendee" | "organizer" }>({
-        query: (body) => ({ url: '/auth/register', method: 'POST', body})
-    }),
-    me: builder.query<{ user: User }, void>({
-        query: () => ({ url: '/auth/me', method: 'GET' })
-    }),
-  }),
+  tagTypes: ["AdminStats", "AdminUsers"],
+  endpoints: () => ({}), // each feature file adds its own
 });
-
-export const { useLoginMutation, useRegisterMutation, useMeQuery } = seatlyApi;

@@ -5,9 +5,10 @@ import { useAppDispatch, useAppSelector } from '../store/hooks'
 type HeaderProps = {
   onHome: () => void
   onSignIn: () => void
+  onDashboard: () => void
 }
 
-export default function Header({ onHome, onSignIn }: HeaderProps) {
+export default function Header({ onHome, onSignIn, onDashboard }: HeaderProps) {
   const dispatch = useAppDispatch()
   const token = useAppSelector((s) => s.auth.token)
   const user = useAppSelector((s) => s.auth.user)
@@ -39,6 +40,11 @@ export default function Header({ onHome, onSignIn }: HeaderProps) {
           <div className="topbar-right">
             {user ? (
               <>
+                {user.role === 'admin' && (
+                  <button className="btn sm btn-lime" onClick={onDashboard}>
+                    Dashboard
+                  </button>
+                )}
                 <span className="user-name">{user.name}</span>
                 <button className="btn sm btn-on-green" onClick={logout}>
                   Sign out

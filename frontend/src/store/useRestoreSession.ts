@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useMeQuery } from "./api";
+import { useMeQuery } from "./authApi";
 import { signedOut, userLoaded } from "./authSlice";
 import { useAppDispatch, useAppSelector } from "./hooks";
 

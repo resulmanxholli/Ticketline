@@ -1,4 +1,4 @@
-export type Role = 'attendee' | 'organizer'
+export type Role = 'attendee' | 'organizer' | 'admin'
 
 export type User = {
   _id: string

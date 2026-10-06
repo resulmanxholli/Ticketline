@@ -6,12 +6,15 @@ import EventDetail from "./pages/EventDetail";
 import Checkout from "./pages/Checkout";
 import Confirmation from "./pages/Confirmation";
 import Login from "./pages/Login";
+import Dashboard from "./pages/dashboard/Dashboard";
+import { useAppSelector } from "./store/hooks";
 import { useRestoreSession } from "./store/useRestoreSession";
 
 // No router yet — a plain view union keeps the static mockup dependency-free.
 type View =
   | { name: "home" }
   | { name: "login" }
+  | { name: "dashboard" }
   | { name: "event"; eventId: string }
   | { name: "checkout"; eventId: string; tierId: string; quantity: number }
   | { name: "confirmation"; eventId: string; tierId: string; quantity: number };
@@ -19,6 +22,7 @@ type View =
 export default function App() {
   useRestoreSession();
   const [view, setView] = useState<View>({ name: "home" });
+  const isAdmin = useAppSelector((s) => s.auth.user?.role === "admin");
 
   const goHome = () => {
     setView({ name: "home" });
@@ -32,11 +36,18 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header onHome={goHome} onSignIn={() => setView({ name: "login" })} />
+      <Header
+        onHome={goHome}
+        onSignIn={() => setView({ name: "login" })}
+        onDashboard={() => setView({ name: "dashboard" })}
+      />
 
       <main>
         {view.name === "login" && <Login onDone={goHome} onCancel={goHome} />}
-        {view.name === "home" && <Home onOpenEvent={openEvent} />}
+        {view.name === "dashboard" && isAdmin && <Dashboard onBack={goHome} />}
+        {(view.name === "home" || (view.name === "dashboard" && !isAdmin)) && (
+          <Home onOpenEvent={openEvent} />
+        )}
 
         {view.name === "event" && (
           <EventDetail

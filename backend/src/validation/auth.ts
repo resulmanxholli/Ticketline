@@ -1,17 +1,18 @@
 import { z } from "zod";
 
-const email = z.string().trim().toLowerCase().pipe(z.email());
+export const nameField = z.string().trim().min(1).max(100);
+export const emailField = z.string().trim().toLowerCase().pipe(z.email());
+export const passwordField = z.string().min(8).max(72);
 
 export const registerSchema = z.object({
-  name: z.string().trim().min(1).max(100),
-  email,
-  password: z.string().min(8).max(72),
-  role: z.enum(["attendee", "organizer"]).optional(),
+  name: nameField,
+  email: emailField,
+  password: passwordField,
 });
 
 export const loginSchema = z.object({
-  email,
-  password: z.string().min(8).max(72),
+  email: emailField,
+  password: passwordField,
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;

@@ -1,16 +1,13 @@
 import { useState, type FormEvent } from 'react'
-import { useLoginMutation, useRegisterMutation } from '../store/api'
+import { useLoginMutation, useRegisterMutation } from '../store/authApi'
 import { signedIn } from '../store/authSlice'
 import { readError } from '../store/errors'
 import { useAppDispatch } from '../store/hooks'
+import FieldError from '../components/FieldError'
 
 type LoginProps = {
   onDone: () => void
   onCancel: () => void
-}
-
-function FieldError({ messages }: { messages?: string[] }) {
-  return messages?.length ? <span className="field-error">{messages[0]}</span> : null
 }
 
 export default function Login({ onDone, onCancel }: LoginProps) {
